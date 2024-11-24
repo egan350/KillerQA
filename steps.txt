@@ -1,0 +1,12 @@
+Title: Example Test Case
+1. open_file("file1.txt")
+2. write_to_file("file1.txt", "Hello from file1")
+3. open_file("file2.txt")
+4. write_to_file("file2.txt", "Hello from file2")
+Title: Example Test Case2
+1. open_file("file3.txt")
+2. write_to_file("file3.txt", "Hello from file3")
+3. open_file("file4.txt")
+4. write_to_file("file4.txt", "Hello from file4")
+Title: Example Test Case3
+1. search_log("/home/eddy/KillerQA/sample_log.log", "ERROR", case_sensitive=True)
