@@ -1,4 +1,4 @@
-(base) eddy@eddy-Latitude-E5470:~/KillerQA$ python execute_steps.py steps.txt --parallel
+~/KillerQA$ python execute_steps.py steps.txt --parallel
 Executing Test Case: Example Test Case2
 Opening file: file1.txt
 Opening file: file2.txt
@@ -8,7 +8,7 @@ Wrote 'Hello from file2' to file2.txt
 Wrote 'Hello from file3' to file3.txt
 Opening file: file4.txt
 Wrote 'Hello from file4' to file4.txt
-(base) eddy@eddy-Latitude-E5470:~/KillerQA$ python execute_steps.py steps.txt 
+~/KillerQA$ python execute_steps.py steps.txt 
 Executing Test Case: Example Test Case2
 Opening file: file1.txt
 Wrote 'Hello from file1' to file1.txt
@@ -18,5 +18,5 @@ Opening file: file3.txt
 Wrote 'Hello from file3' to file3.txt
 Opening file: file4.txt
 Wrote 'Hello from file4' to file4.txt
-(base) eddy@eddy-Latitude-E5470:~/KillerQA$ python execute_steps.py --steps 1,2 steps.txt --parallel
+~/KillerQA$ python execute_steps.py --steps 1,2 steps.txt --parallel
 
