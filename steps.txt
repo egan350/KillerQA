@@ -9,4 +9,9 @@ Title: Example Test Case2
 3. open_file("file4.txt")
 4. write_to_file("file4.txt", "Hello from file4")
 Title: Example Test Case3
-1. search_log("/home/eddy/KillerQA/sample_log.log", "ERROR", case_sensitive=True)
+1. search_log("./sample_log.log", "ERROR", case_sensitive=True)
+Title: API Test [NoParallel]
+1. get_api("https://jsonplaceholder.typicode.com/posts/1")
+2. verify_status_code("200")
+3. verify_json_value("userId", "1")
+4. verify_json_value("id", "1")

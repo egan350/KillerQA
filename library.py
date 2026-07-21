@@ -1,8 +1,43 @@
 import datetime
+import requests
+
 
 current_date = datetime.datetime.now()
 formatted_date = current_date.strftime('%Y-%m-%d')
+_last_response = None
 
+def get_api(url):
+    global _last_response
+    _last_response = requests.get(url)
+    print(f"GET {url}")
+    print(f"Status Code: {_last_response.status_code}")
+
+def verify_status_code(expected):
+    global _last_response
+
+    actual = _last_response.status_code
+
+    if actual != int(expected):
+        raise AssertionError(
+            f"Expected status {expected}, got {actual}"
+        )
+
+    print(f"Verified status code {expected}")
+
+def verify_json_value(field, expected):
+    global _last_response
+
+    if _last_response is None:
+        raise RuntimeError("No API request has been executed.")
+
+    actual = _last_response.json().get(field)
+
+    if str(actual) != expected:
+        raise AssertionError(
+            f"{field}: expected '{expected}', got '{actual}'"
+        )
+
+    print(f"Verified {field} = {expected}")
 
 def open_file(filename):
     print(f"Opening file: {filename}")

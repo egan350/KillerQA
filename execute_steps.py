@@ -44,7 +44,10 @@ if __name__ == "__main__":
     with open(args.file, 'r') as file:
         for line in file:
             if line.startswith("Title:"):
-                title = line.strip().split("Title:", 1)[1].strip()
+                title = line.strip().split("Title:",1)[1].strip()
+                no_parallel = "[NoParallel]" in title
+                clean_title = (title.replace("[NoParallel]", "").strip()
+                    )
             elif line.strip().isdigit() or ". " in line:
                 steps.append(line.strip())
 
@@ -60,4 +63,4 @@ if __name__ == "__main__":
         selected_steps = steps
 
     # Execute steps
-    run_steps(selected_steps, parallel=args.parallel)
+    run_steps(selected_steps,parallel=args.parallel and not no_parallel)
