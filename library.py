@@ -66,7 +66,7 @@ def verify_json_value(field, expected):
 
     print(f"Verified {field} = {expected}")
 
-def search_log(file_path, keyword1, keyword2=None, case_sensitive=True):
+def search_log_today_date(file_path, keyword1, keyword2=None, case_sensitive=True):
     if not file_path or not keyword1:
         raise TypeError("Both 'file_path' and 'keyword1' are required parameters.")
 

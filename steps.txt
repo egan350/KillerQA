@@ -16,7 +16,7 @@ Title: Example Test Case2
 
 Title: Example Test Case3
 
-1. search_log("./sample_log.log", "ERROR", case_sensitive=True)
+1. search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
 
 
 Title: API Test [NoParallel]
