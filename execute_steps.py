@@ -1,27 +1,58 @@
 import threading
 import argparse
-from library import *
+import library
+import shlex
+import ast
+
 
 def execute_step(step):
-    # Parse and execute a single step
-    function_call = step.strip()
-    function_name, arguments = function_call.split("(", 1)
-    function_name = function_name.split('. ')[1].strip()  # Remove step number
-    arguments = arguments.rstrip(")\n").split(", ")
-    arguments = [arg.strip('"') for arg in arguments]
+    step = step.strip()
 
-    # Execute function
-    globals()[function_name](*arguments)
+    if not step:
+        return
+
+    # Remove step number (e.g. "1. ")
+    _, function_call = step.split(". ", 1)
+
+    # Parse the function call
+    expr = ast.parse(function_call, mode="eval").body
+
+    if not isinstance(expr, ast.Call):
+        raise ValueError(f"Invalid step: {step}")
+
+    function_name = expr.func.id
+
+    # Positional arguments
+    args = [
+        ast.literal_eval(arg)
+        for arg in expr.args
+    ]
+
+    # Keyword arguments
+    kwargs = {
+        kw.arg: ast.literal_eval(kw.value)
+        for kw in expr.keywords
+    }
+
+    # Execute
+    getattr(library, function_name)(*args, **kwargs)
 
 
 def run_steps(steps, parallel=False):
     threads = []
+
     for step in steps:
+
         if parallel:
             # Run in parallel using threads
-            thread = threading.Thread(target=execute_step, args=(step,))
+            thread = threading.Thread(
+                target=execute_step,
+                args=(step,)
+            )
+
             threads.append(thread)
             thread.start()
+
         else:
             execute_step(step)
 
@@ -29,38 +60,97 @@ def run_steps(steps, parallel=False):
     for thread in threads:
         thread.join()
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Execute steps from a file, including an optional title.")
-    parser.add_argument("--parallel", action="store_true", help="Run steps in parallel")
-    parser.add_argument("--steps", type=str, help="Specify steps to run, separated by commas (e.g., --steps 1,2)")
-    parser.add_argument("file", type=str, help="Path to the steps file")
+
+    parser = argparse.ArgumentParser(
+        description="Execute test cases from a steps file"
+    )
+
+    parser.add_argument(
+        "--parallel",
+        action="store_true",
+        help="Run steps in parallel"
+    )
+
+    parser.add_argument(
+        "--steps",
+        type=str,
+        help="Specify step numbers to run (example: --steps 1,2)"
+    )
+
+    parser.add_argument(
+        "file",
+        type=str,
+        help="Path to the steps file"
+    )
+
 
     args = parser.parse_args()
 
-    title = None
-    steps = []
 
-    # Read and parse the file
-    with open(args.file, 'r') as file:
+    # Parse test cases
+    tests = []
+    current_test = None
+
+
+    with open(args.file, "r") as file:
+
         for line in file:
+
+            line = line.strip()
+
             if line.startswith("Title:"):
-                title = line.strip().split("Title:",1)[1].strip()
-                no_parallel = "[NoParallel]" in title
-                clean_title = (title.replace("[NoParallel]", "").strip()
-                    )
-            elif line.strip().isdigit() or ". " in line:
-                steps.append(line.strip())
 
-    # Print the title if it exists
-    if title:
-        print(f"Executing Test Case: {title}")
+                # Save previous test case
+                if current_test:
+                    tests.append(current_test)
 
-    # Filter steps if specific ones are requested
-    if args.steps:
-        selected_steps_numbers = set(map(int, args.steps.split(',')))
-        selected_steps = [step for step in steps if int(step.split('.')[0]) in selected_steps_numbers]
-    else:
-        selected_steps = steps
 
-    # Execute steps
-    run_steps(selected_steps,parallel=args.parallel and not no_parallel)
+                title = line.replace("Title:", "").strip()
+
+                current_test = {
+                    "title": title,
+                    "steps": [],
+                    "no_parallel": "[NoParallel]" in title
+                }
+
+
+            elif ". " in line and current_test:
+
+                current_test["steps"].append(line)
+
+
+        # Add final test case
+        if current_test:
+            tests.append(current_test)
+
+
+
+    # Execute test cases
+    for test in tests:
+
+        print()
+        print(f"Executing Test Case: {test['title']}")
+
+        selected_steps = test["steps"]
+
+
+        # Filter steps if requested
+        if args.steps:
+
+            selected_numbers = set(
+                map(int, args.steps.split(","))
+            )
+
+            selected_steps = [
+                step
+                for step in selected_steps
+                if int(step.split(".")[0]) in selected_numbers
+            ]
+
+
+        run_steps(
+            selected_steps,
+            parallel=args.parallel and not test["no_parallel"]
+        )
