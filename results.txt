@@ -1,1 +1,34 @@
+
 Executing Test Case: Example Test Case
+Opening file: file1.txt
+Opening file: file2.txt
+Wrote 'Hello from file1' to file1.txt
+Wrote 'Hello from file2' to file2.txt
+
+Executing Test Case: Example Test Case2
+Opening file: file3.txt
+Opening file: file4.txt
+Wrote 'Hello from file3' to file3.txt
+Wrote 'Hello from file4' to file4.txt
+
+Executing Test Case: Example Test Case3
+Time '2026-09-10'
+
+Executing Test Case: API Test [NoParallel]
+GET https://jsonplaceholder.typicode.com/posts/1
+Status Code: 200
+Verified status code 200
+Verified userId = 1
+Verified id = 1
+
+Executing Test Case: API Test2 [NoParallel]
+POST https://dummyjson.com/auth/login
+Status Code: 200
+Verified status code 200
+Saved accessToken as token
+Header set Authorization
+POST https://dummyjson.com/users/add
+Status Code: 201
+Verified status code 201
+Verified firstName = John
+Verified lastName = Smith
