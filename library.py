@@ -7,6 +7,28 @@ _variables = {}
 current_date = datetime.datetime.now()
 formatted_date = current_date.strftime('%Y-%m-%d')
 _last_response = None
+_SKIP_HTTP_STATUSES = {502, 503, 504}
+
+
+class Skip(Exception):
+    """Precondition not met; the test or remaining steps should be skipped."""
+
+
+def _raise_if_unavailable(url, response):
+    if response.status_code in _SKIP_HTTP_STATUSES:
+        raise Skip(f"HTTP {response.status_code} from {url}")
+
+
+def require_reachable(url, timeout=5):
+    try:
+        requests.head(url, timeout=timeout, allow_redirects=True)
+    except requests.RequestException:
+        try:
+            requests.get(url, timeout=timeout)
+        except requests.RequestException as e:
+            raise Skip(f"host not reachable: {url} ({e})") from e
+
+    print(f"Reachable: {url}")
 
 def open_file(filename):
     print(f"Opening file: {filename}")
@@ -27,6 +49,7 @@ def get_api(url):
 
     print(f"GET {url}")
     print(f"Status Code: {_last_response.status_code}")
+    _raise_if_unavailable(url, _last_response)
 
 def verify_status_code(expected):
     global _last_response
@@ -70,29 +93,25 @@ def search_log_today_date(file_path, keyword1, keyword2=None, case_sensitive=Tru
     if not file_path or not keyword1:
         raise TypeError("Both 'file_path' and 'keyword1' are required parameters.")
 
-    try:
-        print(f"Time '{formatted_date}'")
-        keyword2=formatted_date
-        with open(file_path, 'r') as file:
-            # Convert keywords to lowercase if case-insensitive search is selected
-            search_keyword1 = keyword1 if case_sensitive else keyword1.lower()
-            search_keyword2 = keyword2 if case_sensitive else (keyword2.lower() if keyword2 else None)
+    print(f"Time '{formatted_date}'")
+    keyword2 = formatted_date
+    matches = 0
 
-            # Iterate through each line in the log file
-            for line_number, line in enumerate(file, 1):
-                # Apply case-sensitivity as needed
-                line_content = line if case_sensitive else line.lower()
+    with open(file_path, 'r') as file:
+        search_keyword1 = keyword1 if case_sensitive else keyword1.lower()
+        search_keyword2 = keyword2 if case_sensitive else keyword2.lower()
 
-                # Check if the line contains keyword1 and, if provided, keyword2
-                if (search_keyword1 in line_content) and (search_keyword2 in line_content if search_keyword2 else True):
-                    # Print the line with the line number
-                    print(f"Line {line_number}: {line.strip()}")
-    except FileNotFoundError:
-        # Handle the error by printing a message and not raising it
-        print(f"The file '{file_path}' does not exist.")
-    except Exception as e:
-        # Handle other types of errors and report them
-        print(f"An error occurred: {e}")
+        for line_number, line in enumerate(file, 1):
+            line_content = line if case_sensitive else line.lower()
+
+            if search_keyword1 in line_content and search_keyword2 in line_content:
+                matches += 1
+                print(f"Line {line_number}: {line.strip()}")
+
+    if matches == 0:
+        raise AssertionError(
+            f"No lines matching '{keyword1}' and date '{keyword2}' in {file_path}"
+        )
 
 def save_json_value(field, variable):
     global _last_response
@@ -137,3 +156,4 @@ def post_api(url, body):
 
     print(f"POST {url}")
     print(f"Status Code: {_last_response.status_code}")
+    _raise_if_unavailable(url, _last_response)
