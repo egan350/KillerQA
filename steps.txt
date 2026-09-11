@@ -27,6 +27,16 @@ Title: API Test [NoParallel]
 4. verify_json_value("id", "1")
 
 
+Title: Manual skip example [Skip]
+
+1. open_file("file1.txt")
+
+
+Title: Staging only skip example [SkipUnless env=staging]
+
+1. open_file("file1.txt")
+
+
 Title: API Test2 [NoParallel]
 
 1. post_api("https://dummyjson.com/auth/login", '{"username":"emilys","password":"emilyspass"}')

@@ -2,17 +2,25 @@
 Executing Test Case: Example Test Case
 Opening file: file1.txt
 Opening file: file2.txt
-Wrote 'Hello from file1' to file1.txt
 Wrote 'Hello from file2' to file2.txt
+Wrote 'Hello from file1' to file1.txt
+PASSED  Example Test Case
+         warning: no assertions
 
 Executing Test Case: Example Test Case2
 Opening file: file3.txt
 Opening file: file4.txt
 Wrote 'Hello from file3' to file3.txt
 Wrote 'Hello from file4' to file4.txt
+PASSED  Example Test Case2
+         warning: no assertions
 
 Executing Test Case: Example Test Case3
-Time '2026-09-10'
+Time '2026-09-11'
+FAILED: No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
+FAILED  Example Test Case3
+         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
+         No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
 
 Executing Test Case: API Test [NoParallel]
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -20,6 +28,15 @@ Status Code: 200
 Verified status code 200
 Verified userId = 1
 Verified id = 1
+PASSED  API Test [NoParallel]
+
+Executing Test Case: Manual skip example [Skip]
+SKIPPED  Manual skip example [Skip]
+         [Skip] tag
+
+Executing Test Case: Staging only skip example [SkipUnless env=staging]
+SKIPPED  Staging only skip example [SkipUnless env=staging]
+         SkipUnless env=staging (got unset)
 
 Executing Test Case: API Test2 [NoParallel]
 POST https://dummyjson.com/auth/login
@@ -32,3 +49,22 @@ Status Code: 201
 Verified status code 201
 Verified firstName = John
 Verified lastName = Smith
+PASSED  API Test2 [NoParallel]
+
+================================================================
+KillerQA  7 tests  4 passed  1 failed  2 skipped  0 error
+
+PASSED   Example Test Case
+         warning: no assertions
+PASSED   Example Test Case2
+         warning: no assertions
+FAILED   Example Test Case3
+         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
+         No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
+PASSED   API Test [NoParallel]
+SKIPPED  Manual skip example [Skip]
+         [Skip] tag
+SKIPPED  Staging only skip example [SkipUnless env=staging]
+         SkipUnless env=staging (got unset)
+PASSED   API Test2 [NoParallel]
+================================================================
