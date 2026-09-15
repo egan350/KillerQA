@@ -1,26 +1,26 @@
 
-Executing Test Case: Example Test Case
+Executing Test Case: Example Test Case [Parallel_Tests]
 Opening file: file1.txt
 Opening file: file2.txt
 Wrote 'Hello from file2' to file2.txt
 Wrote 'Hello from file1' to file1.txt
-PASSED  Example Test Case
+PASSED  Example Test Case [Parallel_Tests]
          warning: no assertions
 
 Executing Test Case: Example Test Case2
 Opening file: file3.txt
-Opening file: file4.txt
 Wrote 'Hello from file3' to file3.txt
+Opening file: file4.txt
 Wrote 'Hello from file4' to file4.txt
 PASSED  Example Test Case2
          warning: no assertions
 
 Executing Test Case: Example Test Case3
-Time '2026-09-11'
-FAILED: No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
+Time '2026-09-15'
+FAILED: No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
 FAILED  Example Test Case3
          step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
+         No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
 
 Executing Test Case: API Test [NoParallel]
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -54,13 +54,13 @@ PASSED  API Test2 [NoParallel]
 ================================================================
 KillerQA  7 tests  4 passed  1 failed  2 skipped  0 error
 
-PASSED   Example Test Case
+PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
 PASSED   Example Test Case2
          warning: no assertions
 FAILED   Example Test Case3
          step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-11' in ./sample_log.log
+         No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]
          [Skip] tag

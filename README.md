@@ -2,7 +2,7 @@ KillerQA - Keyword Driven Test Automation Framework
 
 Overview
 --------
-KillerQA is a lightweight Python-based keyword-driven test automation framework.
+KillerQA is a lightweight Python-based keyword-driven test automation framework. **This framework is still in development and in beta. Use with caution.**
 
 Tests are defined in a simple steps file and executed by a Python test runner.
 The framework supports file operations, log validation, and API testing.
