@@ -53,6 +53,12 @@ Run tests in parallel:
 
     python execute_steps.py steps.txt --parallel
 
+    --parallel parameter in the KillerQA framework allows you to run multiple steps in parallel, which can significantly speed up the execution time for independent tests. Here's a more detailed explanation:
+
+    Parallel Execution
+    Parallel Execution: When you use the --parallel parameter with the execute_steps.py script, it allows the test engine to run steps in parallel. This means that if you have multiple independent tests or steps that can be executed concurrently, they will be run at the same time, rather than one after another.
+    Independent Tests: For tests that do not depend on each other and can be executed in parallel, using --parallel can greatly reduce the overall test execution time. This is because the test engine can handle multiple test cases at the same time, rather than waiting for one test to complete before starting the next.
+    Shared State: If tests share state (e.g., variables, headers, or saved variables), you should avoid using --parallel for those tests, as it can lead to race conditions or other unexpected behavior.
 
 Run only some step numbers (applied to every test):
 
