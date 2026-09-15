@@ -295,8 +295,10 @@ def _run_tests(args):
             continue
 
         if test["parallel_tests"]:  # Check for Parallel_Tests tag
+            print(f"Executing {test['title']} in parallel")
             step_results = run_steps(test["steps"], parallel=True)
         else:
+            print(f"Executing {test['title']} in serial")
             step_results = run_steps(test["steps"], parallel=False)
 
         status = rollup_status(step_results)

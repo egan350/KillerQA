@@ -111,6 +111,12 @@ Tags go on the Title line. You can combine them.
     If this test FAILED or ERROR'd, skip the rest of the suite
     with reason aborted by [Must] test ...
 
+[Parallel_Tests]
+Force the test to run in parallel. [Parallel_Tests]
+    Run this test's steps in parallel, ignoring the --parallel flag.
+    Use this for tests that can be executed in parallel without shared state.
+    When you run the script with the command python execute_steps.py --parallel steps.txt, the --parallel flag will override the [Parallel_Tests] tag for all tests, but it should still respect the [Parallel_Tests] tag for Example Test Case2 because it is not explicitly set to [NoParallel].
+
 
 Gates and checks
 ----------------

@@ -1,5 +1,6 @@
 
 Executing Test Case: Example Test Case [Parallel_Tests]
+Executing Example Test Case [Parallel_Tests] in parallel
 Opening file: file1.txt
 Opening file: file2.txt
 Wrote 'Hello from file2' to file2.txt
@@ -8,6 +9,7 @@ PASSED  Example Test Case [Parallel_Tests]
          warning: no assertions
 
 Executing Test Case: Example Test Case2
+Executing Example Test Case2 in serial
 Opening file: file3.txt
 Wrote 'Hello from file3' to file3.txt
 Opening file: file4.txt
@@ -16,6 +18,7 @@ PASSED  Example Test Case2
          warning: no assertions
 
 Executing Test Case: Example Test Case3
+Executing Example Test Case3 in serial
 Time '2026-09-15'
 FAILED: No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
 FAILED  Example Test Case3
@@ -23,6 +26,7 @@ FAILED  Example Test Case3
          No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
 
 Executing Test Case: API Test [NoParallel]
+Executing API Test [NoParallel] in serial
 GET https://jsonplaceholder.typicode.com/posts/1
 Status Code: 200
 Verified status code 200
@@ -39,6 +43,7 @@ SKIPPED  Staging only skip example [SkipUnless env=staging]
          SkipUnless env=staging (got unset)
 
 Executing Test Case: API Test2 [NoParallel]
+Executing API Test2 [NoParallel] in serial
 POST https://dummyjson.com/auth/login
 Status Code: 200
 Verified status code 200
