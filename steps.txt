@@ -1,4 +1,4 @@
-Title: Example Test Case
+Title: Example Test Case [Parallel_Tests]
 
 1. open_file("file1.txt")
 2. write_to_file("file1.txt", "Hello from file1")
