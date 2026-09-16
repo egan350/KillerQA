@@ -3,8 +3,8 @@ Executing Test Case: Example Test Case [Parallel_Tests]
 Executing Example Test Case [Parallel_Tests] in parallel
 Opening file: file1.txt
 Opening file: file2.txt
-Wrote 'Hello from file2' to file2.txt
 Wrote 'Hello from file1' to file1.txt
+Wrote 'Hello from file2' to file2.txt
 PASSED  Example Test Case [Parallel_Tests]
          warning: no assertions
 
@@ -19,11 +19,19 @@ PASSED  Example Test Case2
 
 Executing Test Case: Example Test Case3
 Executing Example Test Case3 in serial
-Time '2026-09-15'
-FAILED: No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
-FAILED  Example Test Case3
-         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
+SKIPPED  Example Test Case3
+
+Executing Test Case: Search Log for Error Using AI [NoParallel]
+Executing Search Log for Error Using AI [NoParallel] in serial
+Header set Content-Type
+Reachable: http://localhost:8080
+
+===== Llama.cpp =====
+NO_ERRORS
+=====================
+
+AI found no errors.
+PASSED  Search Log for Error Using AI [NoParallel]
 
 Executing Test Case: API Test [NoParallel]
 Executing API Test [NoParallel] in serial
@@ -57,15 +65,14 @@ Verified lastName = Smith
 PASSED  API Test2 [NoParallel]
 
 ================================================================
-KillerQA  7 tests  4 passed  1 failed  2 skipped  0 error
+KillerQA  8 tests  5 passed  0 failed  3 skipped  0 error
 
 PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
 PASSED   Example Test Case2
          warning: no assertions
-FAILED   Example Test Case3
-         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-15' in ./sample_log.log
+SKIPPED  Example Test Case3
+PASSED   Search Log for Error Using AI [NoParallel]
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]
          [Skip] tag

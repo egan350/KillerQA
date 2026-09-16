@@ -157,3 +157,67 @@ def post_api(url, body):
     print(f"POST {url}")
     print(f"Status Code: {_last_response.status_code}")
     _raise_if_unavailable(url, _last_response)
+
+def search_log_today_dateAI(file_path, keyword1):
+
+    formatted_date = datetime.datetime.now().strftime('%Y-%m-%d')
+
+    # Read the log file
+    with open(file_path, "r", encoding="utf-8") as f:
+        log_contents = f.read()
+
+    question = f"""
+Check the following log file for any ERROR.
+
+Today's date: {formatted_date}
+
+Look specifically for:
+- ERROR messages
+- Exceptions
+- Tracebacks
+- Failed tests
+
+Log contents:
+{log_contents}
+
+If you find an error, explain it briefly.
+If there are no errors, respond with exactly: NO_ERRORS
+"""
+
+    response = requests.post(
+        "http://localhost:8080/v1/chat/completions",
+        json={
+            "messages": [
+                {
+                    "role": "user",
+                    "content": question
+                }
+            ],
+            "temperature": 0.0,
+            "max_tokens": 500,
+            "stream": False
+        },
+        timeout=600
+    )
+
+    if response.status_code != 200:
+        raise AssertionError(
+            f"llama.cpp failed: {response.status_code}\n"
+            f"{response.text}"
+        )
+
+    data = response.json()
+
+    result = data["choices"][0]["message"]["content"]
+
+    print("\n===== Llama.cpp =====")
+    print(result)
+    print("=====================\n")
+
+    if result == "NO_ERRORS":
+        print("AI found no errors.")
+        return
+    print(f"AI detected an error: {result}")
+    raise AssertionError(
+        f"AI detected an error in {file_path}: {result}"
+        )
