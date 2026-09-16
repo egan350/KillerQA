@@ -17,9 +17,11 @@ Wrote 'Hello from file4' to file4.txt
 PASSED  Example Test Case2
          warning: no assertions
 
-Executing Test Case: Example Test Case3
-Executing Example Test Case3 in serial
-SKIPPED  Example Test Case3
+Executing Test Case: Search Log for Error [NoParallel]
+Executing Search Log for Error [NoParallel] in serial
+Time '2026-09-16'
+Line 16: 2026-09-16 16:51:03 [ERROR] User logged out
+PASSED  Search Log for Error [NoParallel]
 
 Executing Test Case: Search Log for Error Using AI [NoParallel]
 Executing Search Log for Error Using AI [NoParallel] in serial
@@ -65,13 +67,13 @@ Verified lastName = Smith
 PASSED  API Test2 [NoParallel]
 
 ================================================================
-KillerQA  8 tests  5 passed  0 failed  3 skipped  0 error
+KillerQA  8 tests  6 passed  0 failed  2 skipped  0 error
 
 PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
 PASSED   Example Test Case2
          warning: no assertions
-SKIPPED  Example Test Case3
+PASSED   Search Log for Error [NoParallel]
 PASSED   Search Log for Error Using AI [NoParallel]
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]

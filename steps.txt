@@ -13,8 +13,9 @@ Title: Example Test Case2
 3. open_file("file4.txt")
 4. write_to_file("file4.txt", "Hello from file4")
 
+Title: Search Log for Error [NoParallel]
 
-Title: Example Test Case3
+1. search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
 
 Title: Search Log for Error Using AI [NoParallel]
 
