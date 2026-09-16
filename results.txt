@@ -21,7 +21,10 @@ Executing Test Case: Search Log for Error [NoParallel]
 Executing Search Log for Error [NoParallel] in serial
 Time '2026-09-16'
 Line 16: 2026-09-16 16:51:03 [ERROR] User logged out
-PASSED  Search Log for Error [NoParallel]
+FAILED: No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
+FAILED  Search Log for Error [NoParallel]
+         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
+         No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
 
 Executing Test Case: Search Log for Error Using AI [NoParallel]
 Executing Search Log for Error Using AI [NoParallel] in serial
@@ -67,13 +70,15 @@ Verified lastName = Smith
 PASSED  API Test2 [NoParallel]
 
 ================================================================
-KillerQA  8 tests  6 passed  0 failed  2 skipped  0 error
+KillerQA  8 tests  5 passed  1 failed  2 skipped  0 error
 
 PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
 PASSED   Example Test Case2
          warning: no assertions
-PASSED   Search Log for Error [NoParallel]
+FAILED   Search Log for Error [NoParallel]
+         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
+         No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
 PASSED   Search Log for Error Using AI [NoParallel]
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]

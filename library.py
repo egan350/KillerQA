@@ -108,9 +108,9 @@ def search_log_today_date(file_path, keyword1, keyword2=None, case_sensitive=Tru
                 matches += 1
                 print(f"Line {line_number}: {line.strip()}")
 
-    if matches == 0:
+    if matches != 0:
         raise AssertionError(
-            f"No lines matching '{keyword1}' and date '{keyword2}' in {file_path}"
+            f"ERROR lines matching '{keyword1}' and date '{keyword2}' in {file_path}"
         )
 
 def save_json_value(field, variable):
