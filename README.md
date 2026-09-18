@@ -7,6 +7,13 @@ KillerQA is a lightweight Python-based keyword-driven test automation framework.
 Tests are defined in a simple steps file and executed by a Python test runner.
 The framework supports file operations, log validation, and API testing.
 
+The framework supports advanced AI capabilities using llama.cpp to enhance various functionalities, ensuring efficiency, accuracy, and reliability. Some key features include:
+
+- **Real-time Analysis**: The framework can analyze log files in real-time, detecting errors and anomalies with unparalleled speed and precision.
+- **Automated Error Detection**: AI-driven tools automatically identify and explain errors, helping developers save time and streamline their debugging process.
+- **Proactive Maintenance**: AI monitors system performance and predicts potential issues before they occur, allowing for proactive maintenance and minimal downtime.
+- **Customizable Solutions**: Tailored AI solutions can be easily modified and shared.
+
 You do not mark tests as passed or failed yourself. The runner infers
 PASSED, FAILED, SKIPPED, or ERROR from what each keyword does and from
 optional tags on the test title.
@@ -18,7 +25,8 @@ Features
 - Keyword-based test execution
 - API testing with response validation
 - JSON value verification
-- Log file searching (no match is a failure)
+- Log file ERROR searching
+- Log file AI ERROR searching and analysis  
 - Optional parallel execution for independent tests
 - Sequential execution support for dependent tests
 - Inferred test verdicts: PASSED, FAILED, SKIPPED, ERROR

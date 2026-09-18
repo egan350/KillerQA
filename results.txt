@@ -20,27 +20,92 @@ PASSED  Example Test Case2
 Executing Test Case: Search Log for Error [NoParallel]
 Executing Search Log for Error [NoParallel] in serial
 Time '2026-09-18'
-Line 3: 2026-09-18 16:51:03 [ERROR] Timeout occurred while processing request
-Line 7: 2026-09-18 16:51:03 [ERROR] System started successfully
-Line 16: 2026-09-18 16:51:03 [ERROR] User logged out
-FAILED: ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
-FAILED  Search Log for Error [NoParallel]
-         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
+PASSED  Search Log for Error [NoParallel]
 
 Executing Test Case: Search Log for Error Using AI [NoParallel]
 Executing Search Log for Error Using AI [NoParallel] in serial
 Header set Content-Type
 Reachable: http://localhost:8080
+ERROR: ReadTimeout: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=600)
+Traceback (most recent call last):
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "/usr/local/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "/usr/local/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
 
-===== Llama.cpp =====
-ERRORS_FOUND
-=====================
+The above exception was the direct cause of the following exception:
 
-FAILED: Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
-FAILED  Search Log for Error Using AI [NoParallel]
+Traceback (most recent call last):
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/util/retry.py", line 498, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+        self, url, f"Read timed out. (read timeout={timeout_value})"
+    ) from err
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=600)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/eddygandini/KillerQA/execute_steps.py", line 128, in execute_step
+    getattr(library, function_name)(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/eddygandini/KillerQA/library.py", line 183, in search_log_today_date_ai
+    response = requests.post(
+        "http://localhost:8080/v1/chat/completions",
+    ...<11 lines>...
+        timeout=600,
+    )
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/api.py", line 134, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/eddygandini/KillerQAenv/lib/python3.13/site-packages/requests/adapters.py", line 742, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=600)
+ERROR  Search Log for Error Using AI [NoParallel]
          step 3  search_log_today_date_ai("./sample_log.log", "ERROR")
-         Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
+         ReadTimeout: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=600)
 
 Executing Test Case: API Test [NoParallel]
 Executing API Test [NoParallel] in serial
@@ -74,18 +139,16 @@ Verified lastName = Smith
 PASSED  API Test2 [NoParallel]
 
 ================================================================
-KillerQA  8 tests  4 passed  2 failed  2 skipped  0 error
+KillerQA  8 tests  5 passed  0 failed  2 skipped  1 error
 
 PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
 PASSED   Example Test Case2
          warning: no assertions
-FAILED   Search Log for Error [NoParallel]
-         step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
-FAILED   Search Log for Error Using AI [NoParallel]
+PASSED   Search Log for Error [NoParallel]
+ERROR    Search Log for Error Using AI [NoParallel]
          step 3  search_log_today_date_ai("./sample_log.log", "ERROR")
-         Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
+         ReadTimeout: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=600)
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]
          [Skip] tag
