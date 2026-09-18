@@ -19,12 +19,14 @@ PASSED  Example Test Case2
 
 Executing Test Case: Search Log for Error [NoParallel]
 Executing Search Log for Error [NoParallel] in serial
-Time '2026-09-16'
-Line 16: 2026-09-16 16:51:03 [ERROR] User logged out
-FAILED: No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
+Time '2026-09-18'
+Line 3: 2026-09-18 16:51:03 [ERROR] Timeout occurred while processing request
+Line 7: 2026-09-18 16:51:03 [ERROR] System started successfully
+Line 16: 2026-09-18 16:51:03 [ERROR] User logged out
+FAILED: ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
 FAILED  Search Log for Error [NoParallel]
          step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
+         ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
 
 Executing Test Case: Search Log for Error Using AI [NoParallel]
 Executing Search Log for Error Using AI [NoParallel] in serial
@@ -32,11 +34,13 @@ Header set Content-Type
 Reachable: http://localhost:8080
 
 ===== Llama.cpp =====
-NO_ERRORS
+ERRORS_FOUND
 =====================
 
-AI found no errors.
-PASSED  Search Log for Error Using AI [NoParallel]
+FAILED: Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
+FAILED  Search Log for Error Using AI [NoParallel]
+         step 3  search_log_today_date_ai("./sample_log.log", "ERROR")
+         Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
 
 Executing Test Case: API Test [NoParallel]
 Executing API Test [NoParallel] in serial
@@ -70,7 +74,7 @@ Verified lastName = Smith
 PASSED  API Test2 [NoParallel]
 
 ================================================================
-KillerQA  8 tests  5 passed  1 failed  2 skipped  0 error
+KillerQA  8 tests  4 passed  2 failed  2 skipped  0 error
 
 PASSED   Example Test Case [Parallel_Tests]
          warning: no assertions
@@ -78,8 +82,10 @@ PASSED   Example Test Case2
          warning: no assertions
 FAILED   Search Log for Error [NoParallel]
          step 1  search_log_today_date("./sample_log.log", "ERROR", case_sensitive=True)
-         No lines matching 'ERROR' and date '2026-09-16' in ./sample_log.log
-PASSED   Search Log for Error Using AI [NoParallel]
+         ERROR lines matching 'ERROR' and date '2026-09-18' in ./sample_log.log
+FAILED   Search Log for Error Using AI [NoParallel]
+         step 3  search_log_today_date_ai("./sample_log.log", "ERROR")
+         Keyword 'ERROR' found in ./sample_log.log for 2026-09-18.
 PASSED   API Test [NoParallel]
 SKIPPED  Manual skip example [Skip]
          [Skip] tag

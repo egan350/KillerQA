@@ -158,31 +158,27 @@ def post_api(url, body):
     print(f"Status Code: {_last_response.status_code}")
     _raise_if_unavailable(url, _last_response)
 
-def search_log_today_dateAI(file_path, keyword1):
+import datetime
+import requests
 
-    formatted_date = datetime.datetime.now().strftime('%Y-%m-%d')
 
-    # Read the log file
-    with open(file_path, "r", encoding="utf-8") as f:
-        log_contents = f.read()
+def search_log_today_date_ai(file_path: str, keyword: str) -> None:
+    formatted_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        log_contents = file.read()
 
     question = f"""
-Check the following log file for any ERROR.
+Check the log content below for occurrences of the keyword "{keyword}"
+on the date {formatted_date}.
 
-Today's date: {formatted_date}
+Respond with exactly one of these values:
+ERRORS_FOUND
+NO_ERRORS
 
-Look specifically for:
-- ERROR messages
-- Exceptions
-- Tracebacks
-- Failed tests
-
-Log contents:
+Log content:
 {log_contents}
-
-If you find an error, explain it briefly.
-If there are no errors, respond with exactly: NO_ERRORS
-"""
+""".strip()
 
     response = requests.post(
         "http://localhost:8080/v1/chat/completions",
@@ -190,34 +186,36 @@ If there are no errors, respond with exactly: NO_ERRORS
             "messages": [
                 {
                     "role": "user",
-                    "content": question
+                    "content": question,
                 }
             ],
             "temperature": 0.0,
-            "max_tokens": 500,
-            "stream": False
+            "max_tokens": 20,
+            "stream": False,
         },
-        timeout=600
+        timeout=600,
     )
 
-    if response.status_code != 200:
-        raise AssertionError(
-            f"llama.cpp failed: {response.status_code}\n"
-            f"{response.text}"
-        )
+    response.raise_for_status()
 
     data = response.json()
 
-    result = data["choices"][0]["message"]["content"]
+    try:
+        result = data["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError, TypeError) as exc:
+        raise ValueError(f"Unexpected model response: {data}") from exc
 
     print("\n===== Llama.cpp =====")
     print(result)
     print("=====================\n")
 
     if result == "NO_ERRORS":
-        print("AI found no errors.")
+        print(f"AI found no errors for {formatted_date}.")
         return
-    print(f"AI detected an error: {result}")
-    raise AssertionError(
-        f"AI detected an error in {file_path}: {result}"
+
+    if result == "ERRORS_FOUND":
+        raise AssertionError(
+            f"Keyword {keyword!r} found in {file_path} for {formatted_date}."
         )
+
+    raise ValueError(f"Unexpected model result: {result!r}")

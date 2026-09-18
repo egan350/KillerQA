@@ -21,7 +21,7 @@ Title: Search Log for Error Using AI [NoParallel]
 
 1. set_header("Content-Type", "application/json")
 2. require_reachable("http://localhost:8080")
-3. search_log_today_dateAI("./sample_log.log", "ERROR")
+3. search_log_today_date_ai("./sample_log.log", "ERROR")
 
 
 Title: API Test [NoParallel]
