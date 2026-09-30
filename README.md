@@ -2,10 +2,17 @@ KillerQA - Keyword Driven Test Automation Framework
 
 Overview
 --------
-KillerQA is a lightweight Python-based keyword-driven test automation framework.
+KillerQA is a lightweight Python-based keyword-driven test automation framework. **This framework is still in development and in beta. Use with caution.**
 
 Tests are defined in a simple steps file and executed by a Python test runner.
 The framework supports file operations, log validation, and API testing.
+
+The framework supports advanced AI capabilities using llama.cpp to enhance various functionalities, ensuring efficiency, accuracy, and reliability. Some key features include:
+
+- **Real-time Analysis**: The framework can analyze log files in real-time, detecting errors and anomalies with unparalleled speed and precision.
+- **Automated Error Detection**: AI-driven tools automatically identify and explain errors, helping developers save time and streamline their debugging process.
+- **Proactive Maintenance**: AI monitors system performance and predicts potential issues before they occur, allowing for proactive maintenance and minimal downtime.
+- **Customizable Solutions**: Tailored AI solutions can be easily modified and shared.
 
 You do not mark tests as passed or failed yourself. The runner infers
 PASSED, FAILED, SKIPPED, or ERROR from what each keyword does and from
@@ -18,7 +25,8 @@ Features
 - Keyword-based test execution
 - API testing with response validation
 - JSON value verification
-- Log file searching (no match is a failure)
+- Log file ERROR searching
+- Log file AI ERROR searching and analysis  
 - Optional parallel execution for independent tests
 - Sequential execution support for dependent tests
 - Inferred test verdicts: PASSED, FAILED, SKIPPED, ERROR
@@ -53,6 +61,12 @@ Run tests in parallel:
 
     python execute_steps.py steps.txt --parallel
 
+    --parallel parameter in the KillerQA framework allows you to run multiple steps in parallel, which can significantly speed up the execution time for independent tests. Here's a more detailed explanation:
+
+    Parallel Execution
+    Parallel Execution: When you use the --parallel parameter with the execute_steps.py script, it allows the test engine to run steps in parallel. This means that if you have multiple independent tests or steps that can be executed concurrently, they will be run at the same time, rather than one after another.
+    Independent Tests: For tests that do not depend on each other and can be executed in parallel, using --parallel can greatly reduce the overall test execution time. This is because the test engine can handle multiple test cases at the same time, rather than waiting for one test to complete before starting the next.
+    Shared State: If tests share state (e.g., variables, headers, or saved variables), you should avoid using --parallel for those tests, as it can lead to race conditions or other unexpected behavior.
 
 Run only some step numbers (applied to every test):
 
@@ -110,6 +124,12 @@ Tags go on the Title line. You can combine them.
 [Must]
     If this test FAILED or ERROR'd, skip the rest of the suite
     with reason aborted by [Must] test ...
+
+[Parallel_Tests]
+Force the test to run in parallel. [Parallel_Tests]
+    Run this test's steps in parallel, ignoring the --parallel flag.
+    Use this for tests that can be executed in parallel without shared state.
+    When you run the script with the command python execute_steps.py --parallel steps.txt, the --parallel flag will override the [Parallel_Tests] tag for all tests, but it should still respect the [Parallel_Tests] tag for Example Test Case2 because it is not explicitly set to [NoParallel].
 
 
 Gates and checks

@@ -52,9 +52,12 @@ def parse_title(title):
     tags = re.findall(r"\[([^\]]+)\]", title)
 
     skip_unless = []
+    parallel_tests = []
     for tag in tags:
         if tag.startswith("SkipUnless "):
             skip_unless.append(tag[len("SkipUnless "):].strip())
+        elif tag == "Parallel_Tests":
+            parallel_tests.append(True)
 
     return {
         "title": title,
@@ -63,6 +66,7 @@ def parse_title(title):
         "skip": "Skip" in tags,
         "must": "Must" in tags,
         "skip_unless": skip_unless,
+        "parallel_tests": parallel_tests,  # New field to store Parallel_Tests tag
     }
 
 
@@ -290,32 +294,18 @@ def _run_tests(args):
             print_test_verdict(result)
             continue
 
-        selected_steps = test["steps"]
-
-        if args.steps:
-            selected_numbers = set(map(int, args.steps.split(",")))
-            selected_steps = [
-                step
-                for step in selected_steps
-                if int(step.split(".")[0]) in selected_numbers
-            ]
-
-        if not selected_steps:
-            result = TestResult(test["title"], "SKIPPED", "no matching steps")
-            suite.append(result)
-            print_test_verdict(result)
-            continue
-
-        step_results = run_steps(
-            selected_steps,
-            parallel=args.parallel and not test["no_parallel"],
-        )
+        if test["parallel_tests"]:  # Check for Parallel_Tests tag
+            print(f"Executing {test['title']} in parallel")
+            step_results = run_steps(test["steps"], parallel=True)
+        else:
+            print(f"Executing {test['title']} in serial")
+            step_results = run_steps(test["steps"], parallel=False)
 
         status = rollup_status(step_results)
         reason = test_reason(step_results, status)
         warning = ""
 
-        if status == "PASSED" and not any(is_check_step(step) for step in selected_steps):
+        if status == "PASSED" and not any(is_check_step(step) for step in test["steps"]):
             warning = "no assertions"
 
         result = TestResult(test["title"], status, reason, warning)

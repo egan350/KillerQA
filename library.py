@@ -108,9 +108,9 @@ def search_log_today_date(file_path, keyword1, keyword2=None, case_sensitive=Tru
                 matches += 1
                 print(f"Line {line_number}: {line.strip()}")
 
-    if matches == 0:
+    if matches != 0:
         raise AssertionError(
-            f"No lines matching '{keyword1}' and date '{keyword2}' in {file_path}"
+            f"ERROR lines matching '{keyword1}' and date '{keyword2}' in {file_path}"
         )
 
 def save_json_value(field, variable):
@@ -157,3 +157,65 @@ def post_api(url, body):
     print(f"POST {url}")
     print(f"Status Code: {_last_response.status_code}")
     _raise_if_unavailable(url, _last_response)
+
+import datetime
+import requests
+
+
+def search_log_today_date_ai(file_path: str, keyword: str) -> None:
+    formatted_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        log_contents = file.read()
+
+    question = f"""
+Check the log content below for occurrences of the keyword "{keyword}"
+on the date {formatted_date}.
+
+Respond with exactly one of these values:
+ERRORS_FOUND
+NO_ERRORS
+
+Log content:
+{log_contents}
+""".strip()
+
+    response = requests.post(
+        "http://localhost:8080/v1/chat/completions",
+        json={
+            "messages": [
+                {
+                    "role": "user",
+                    "content": question,
+                }
+            ],
+            "temperature": 0.0,
+            "max_tokens": 20,
+            "stream": False,
+        },
+        timeout=600,
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    try:
+        result = data["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError, TypeError) as exc:
+        raise ValueError(f"Unexpected model response: {data}") from exc
+
+    print("\n===== Llama.cpp =====")
+    print(result)
+    print("=====================\n")
+
+    if result == "NO_ERRORS":
+        print(f"AI found no errors for {formatted_date}.")
+        return
+
+    if result == "ERRORS_FOUND":
+        raise AssertionError(
+            f"Keyword {keyword!r} found in {file_path} for {formatted_date}."
+        )
+
+    raise ValueError(f"Unexpected model result: {result!r}")
